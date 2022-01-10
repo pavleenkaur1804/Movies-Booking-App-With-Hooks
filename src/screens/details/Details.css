@@ -1,0 +1,24 @@
+.flex-container{
+    
+    max-width: 100%;
+    padding: 1%;
+}
+.column-left{
+    padding-left:1%
+}
+.column-middle{
+    padding-left: 3%;
+}
+.column-right{
+    padding-left: 1%;
+}
+.video{position: relative;
+margin-top: 16px;}
+.back-home-link{
+    margin:8px 24px 0;
+    height:24px;
+
+}
+.back-home-link:hover{
+    cursor:pointer;
+}

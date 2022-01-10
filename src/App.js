@@ -1,13 +1,28 @@
-
-import './App.css';
 import Home from './screens/home/Home';
+import Details from './screens/details/Details';
+// import BookShow from './screens/bookshow/BookShow';
+// import Confirmation from './screens/confirmation/Confirmation';
+import { Routes,Route } from 'react-router-dom';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <Home />
-    </div>
-  );
+const Routing=()=>{
+    return(
+        
+        <Routes>
+        <Route path="/" element={<Home />}></Route>
+       
+       
+        <Route path="/details/:id" element={<Details />}></Route>
+
+        </Routes>
+        
+        );
 }
-
-export default App;
+const App=()=>{
+    
+  
+    return(
+      <Routing />
+    );
+}
+export default App
