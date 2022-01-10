@@ -4,6 +4,13 @@ import Details from './screens/details/Details';
 // import Confirmation from './screens/confirmation/Confirmation';
 import { Routes,Route } from 'react-router-dom';
 import React from 'react';
+import { useReducer } from 'react';
+import React from 'react'
+import { initialState,reducer } from './common/UseReducer';
+import Logout from './common/logout/Logout';
+
+export const UserContext=createContext();
+
 
 const Routing=()=>{
     return(
@@ -20,7 +27,7 @@ const Routing=()=>{
 }
 const App=()=>{
     
-  
+  const [state, dispatch] = useReducer(reducer, initialState)
     return(
       <Routing />
     );
