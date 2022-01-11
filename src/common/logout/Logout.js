@@ -8,17 +8,16 @@ import { useEffect } from 'react';
 
 const Logout=()=>{
     const navigate=useNavigate();
-    const {state,dispatch}=useContext(UserContext);   
     const handleClickLogoutBtn=(e)=>{
         e.preventDefault();
-       dispatch({type:"USER",payload:false})
+      logged.setItem("islogged",false)
       window.alert("You have Logged out !");
-      navigate("/login")
+      navigate("/")
      
     }; 
+    const logged=true;
     useEffect(()=>{
-        fetch('/',{method:"GET",headers:{Accept:"application/json","Content-Type":"application/json"},credentials:"include"}).then((res)=>{ dispatch({type:'USER',payload:true})
-    navigate("/")});
+       logged=localStorage.getItem("islogged")
        
     })
     return(

@@ -5,8 +5,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import { useEffect } from "react";
-import { UserContext } from '../../App';
-import { useContext } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { FormHelperText } from '@material-ui/core';
 
@@ -15,7 +14,7 @@ import { FormHelperText } from '@material-ui/core';
 
    
     const LoginForm=()=>{
-      const {state,dispatch}=useContext(UserContext);
+    
    const navigate=useNavigate();
       const FormValues={username:"",passwordLogin:""};
       const[formvalues,setFormValues]=useState(FormValues);
@@ -40,8 +39,8 @@ import { FormHelperText } from '@material-ui/core';
        
         if((userInfo.email===formvalues.username) && (userInfo.passwordRegister ===formvalues.passwordLogin)&&(formvalues.username!==''&& formvalues.passwordLogin!=='')){
          
-          dispatch({type:"USER",payload:true})
-         navigate("/logout") 
+          localStorage.setItem("islogged",true);
+         navigate("/") 
        
         }
       }

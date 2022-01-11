@@ -4,12 +4,10 @@ import Details from './screens/details/Details';
 // import Confirmation from './screens/confirmation/Confirmation';
 import { Routes,Route } from 'react-router-dom';
 import React from 'react';
-import { useReducer } from 'react';
-import React from 'react'
-import { initialState,reducer } from './common/UseReducer';
-import Logout from './common/logout/Logout';
 
-export const UserContext=createContext();
+
+
+
 
 
 const Routing=()=>{
@@ -19,7 +17,7 @@ const Routing=()=>{
         <Route path="/" element={<Home />}></Route>
        
        
-        <Route path="/details/:id" element={<Details />}></Route>
+        <Route path="/details/" element={<Details />}></Route>
 
         </Routes>
         
@@ -27,9 +25,12 @@ const Routing=()=>{
 }
 const App=()=>{
     
-  const [state, dispatch] = useReducer(reducer, initialState)
+
     return(
+
+      
       <Routing />
+      
     );
 }
 export default App

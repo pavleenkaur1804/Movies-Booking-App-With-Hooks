@@ -23,32 +23,24 @@ import Typography from '@material-ui/core/Typography';
 import { MenuItem,TextField } from '@material-ui/core';
 
 import { useEffect } from 'react';
-import { useNavigate,Link } from 'react-router-dom';
-import { useDispatch,useSelector } from 'react-redux';
-import { addMovies, getAllMovies } from '../../common/store/MovieSlice';
+import { Navigate, useNavigate,useParams,Link } from 'react-router-dom';
 
 
 
 const useStyles = makeStyles((theme)=>({
     root1: {
       bgcolor: "white",
-
     
     
     },
     root: {
       
       bgcolor: "white",
-      display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
       
     },
     imageList: {
-      flexWrap: 'nowrap',
-      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-      transform: 'translateZ(0)',
+     
+    overflowX:'scroll'
      
     },
     title: {
@@ -60,7 +52,7 @@ const useStyles = makeStyles((theme)=>({
     },
     
     imageList_Released: {
-      width: 700,
+      width: 600,
       height: 350,
       overflow:'visible'
      },
@@ -84,7 +76,7 @@ const useStyles = makeStyles((theme)=>({
       marginTop: '2px',
     },
     root2: {
-      minWidth: 300,
+      minWidth: 275,
      
     },
     heading:{
@@ -95,31 +87,58 @@ const useStyles = makeStyles((theme)=>({
 const Home=(props)=>{
      
     const [NameOfMovie,setNameOfMovie]=useState("");
-    const [AllGenres,setAllGenres]=useState(genre);
-    const [AllArtists,setAllArtists]=useState(artists);
-    const [Upcoming,setUpcoming]=useState(moviesData);
-    const [Released,setReleased]=useState(moviesData);
+    const [AllGenres,setAllGenres]=useState([{}]);
+    const [AllArtists,setAllArtists]=useState([{}]);
+    const [Upcoming,setUpcoming]=useState([{}]);
+    const [Released,setReleased]=useState([{}]);
     const [BeginningDate,setBeginningDate]=useState("");
     const [LastDate,setLastDate]=useState("");
     const [CurrentGenres,setCurrentGenres]=useState([]);
     const [CurrentArtists,setCurrentArtists]=useState([]);
     
    const classes=useStyles();
-   const dispatch = useDispatch();
-   console.log( useSelector(getAllMovies))
-   const navigate = useNavigate();
   
+    useEffect(() => {
+        setUpcoming(moviesData);
+        setReleased(moviesData);
+        setAllGenres(genre);
+        setAllArtists(artists);
+       
+    })
+     
+       
+    const navigate = useNavigate();
+    let {id} = useParams();
+    
+    //This controls the state of the movie name
+    const nameSelectorHandler = event => {
+      setNameOfMovie(event.target.value);
   
-    
-    
-    
+    }
+    //This controls the state of the genre
+    const genreHandler = event => {
+      setCurrentGenres(event.target.value);
+    }
+    //This controls the state of the artists
+    const artistsHandler = event => {
+      setCurrentArtists(event.target.value);
+    }
+    //This controls the state of the start date of the movie
+    const begDateHandler = event => {
+     setBeginningDate(event.target.value);
+    }
+  //  This controls the state of the last date of the the movie
+    const lastDateHandler = event => {
+      setLastDate(event.target.value);
+    }
+  
    
   //This controls the functionality of searching for the movie as required by the user
    const applyingCurrentChanges = () => {
   
   
       var filterDataOfMovie = moviesData.filter(item => (item.title.includes(NameOfMovie) || item.artists.includes(CurrentArtists) || item.genres.includes(CurrentGenres)));
-     
+      // console.log(filterData);
       setReleased(filterDataOfMovie);
   
      
@@ -127,7 +146,13 @@ const Home=(props)=>{
   
     }
         
-  
+   function handleClick(id){
+       <Link to='/details/id'></Link>
+       navigate('/details/id',{state:{movieid:id}})
+       
+   }
+    
+    
     
     
     
@@ -141,7 +166,6 @@ const Home=(props)=>{
 
 
     const UpcomingMoviesListDisplay=()=>{
-      dispatch(addMovies(moviesData))
         {/*Upcoming Movies List*/}
          const classes=useStyles();
          return(
@@ -158,7 +182,6 @@ const Home=(props)=>{
     }
     const ReleasedMoviesListDisplay=()=>{
         const classes=useStyles();
-       
         {/*Released Movies List */}
         
         return( 
@@ -171,8 +194,8 @@ const Home=(props)=>{
               {Released.slice(0,4).map(item => (
                   <ImageListItem  style={{cursor:"pointer",pointerEvents:"all"}}  key={"releasedItem"+item.id}  >
                     
-                  <img onClick={()=>{
-                navigate(`/details/${item.id}`)}} src={item.poster_url} alt={item.title} />
+                  <img onClick={()=>{localStorage.setItem('UserDetails',JSON.stringify(item));
+                navigate("/details/")}} src={item.poster_url} alt={item.title} />
                     <ImageListItemBar
                       title={item.title}
                       subtitle={<span>Release Date: {new Date(item.release_date).toLocaleDateString('en-us', { weekday:"short", year:"numeric", month:"short", day:"numeric"})}</span>}
@@ -200,13 +223,13 @@ const Home=(props)=>{
       <br></br>
       <FormControl  className={classes.formControl}>
         <InputLabel htmlFor="movieName"> Movie Name </InputLabel>
-        <Input id="movieName" value={NameOfMovie} onChange={e => setNameOfMovie(e.target.value)} />
+        <Input id="movieName" value={NameOfMovie} onChange={nameSelectorHandler} />
       </FormControl>
       <br></br>
       <FormControl className={classes.formControl}>
         <InputLabel htmlFor="select-multiple-checkbox">Genre</InputLabel>
         <Select multiple input={<Input id="select-multiple-checkbox" />} renderValue={selected => selected.join(',')} value={CurrentGenres}
-          onChange={e => setCurrentGenres(e.target.value)}>
+          onChange={genreHandler}>
           {AllGenres.map(item => (
             <MenuItem key={item.id} value={item.name}>
               <Checkbox checked={CurrentGenres.indexOf(item.name) } />
@@ -219,7 +242,7 @@ const Home=(props)=>{
       <FormControl className={classes.formControl}>
         <InputLabel htmlFor="select-multiple-checkbox">Artists</InputLabel>
         <Select multiple input={<Input id="select-multiple-checkbox" />} renderValue={selected => selected.join(',')} value={CurrentArtists}
-          onChange={e => setCurrentArtists(e.target.value)}>
+          onChange={artistsHandler}>
           {AllArtists.map(item => (
             <MenuItem key={item.id} value={item.first_name + " " + item.last_name}>
               <Checkbox checked={CurrentArtists.indexOf(item.first_name + " " + item.last_name) } />
@@ -231,13 +254,13 @@ const Home=(props)=>{
       <br></br>
       <FormControl className={classes.formControl}>
         <TextField id="begDate" label="Release Date Start" value={BeginningDate} type="date" InputLabelProps={{ shrink: true }}
-          onChange={e => setBeginningDate(e.target.value)}
+          onChange={begDateHandler}
         />
       </FormControl>
       <br></br>
       <FormControl className={classes.formControl}>
         <TextField id="lastDate" label="Release Date End" value={LastDate} type="date" InputLabelProps={{ shrink: true }}
-          onChange={e => setLastDate(e.target.value)}
+          onChange={lastDateHandler}
         />
       </FormControl><br /><br />
       <FormControl className={classes.formControl}>

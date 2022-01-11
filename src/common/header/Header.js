@@ -12,9 +12,7 @@ import Box  from '@material-ui/core/Box';
 
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import {UserContext} from '../../App';
-import {useContext} from 'react'
-import { useNavigate } from 'react-router-dom';
+
 import Logout from '../logout/Logout'
 
 
@@ -36,11 +34,11 @@ const useStyles = makeStyles((theme) => ({
  
 const Header=(props)=>{
  
-  const {state,dispatch}=useContext(UserContext);   
+  
   const ButtonSelect=()=>{
   
     
-    if(state){
+    if(localStorage.getItem("islogged")===true){
       return(
         < Logout />
         );

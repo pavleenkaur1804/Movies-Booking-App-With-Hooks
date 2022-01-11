@@ -7,21 +7,15 @@ import { BrowserRouter } from 'react-router-dom';
 import {Provider} from "react-redux";
 import {store} from './common/store/store';
 import { createContext } from 'react';
-import { useReducer } from 'react';
-import React from 'react'
-import { initialState,reducer } from './common/UseReducer';
-import Logout from './common/logout/Logout';
-
-export const UserContext=createContext();
 
 ReactDOM.render(
-  <React.StrictMode>
+  
   <Provider store={store}>
   <BrowserRouter basename='/'>
     <App />
     </BrowserRouter>
     </Provider>
-  </React.StrictMode>,
+  ,
   document.getElementById('root')
 );
 
